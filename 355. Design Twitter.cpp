@@ -4,7 +4,8 @@ class Twitter {
 public:
     using Tweet = pair<int, size_t>;
 
-    struct TweetHash { // unordered_set<pair<int, size_t>>需要提供一个hash函数
+    class TweetHash { // unordered_set<pair<int, size_t>>需要提供一个hash函数
+    public:
         size_t operator ()(const Tweet &tweet) const {
             return hash<size_t>()(tweet.second);
         }
