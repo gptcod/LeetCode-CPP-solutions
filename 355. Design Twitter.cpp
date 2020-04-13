@@ -4,6 +4,12 @@ class Twitter {
 public:
     using Tweet = pair<int, size_t>;
 
+    struct TweetHash { // unordered_set<pair<int, size_t>>需要提供一个hash函数
+        size_t operator ()(const Tweet &tweet) const {
+            return hash<size_t>()(tweet.second);
+        }
+    };
+
     explicit Twitter() { timestamp = 0; };
 
     void postTweet(int userId, int tweetId) {
@@ -54,7 +60,7 @@ public:
 
 private:
     unordered_map<int, unordered_set<int>> following; // 关注 (followerId -> followeeId)
-    unordered_map<int, set<Tweet>> tweets; // 推文列表 (userId -> (tweetId, tweetTimestamp))
+    unordered_map<int, unordered_set<Tweet, TweetHash>> tweets; // 推文列表 (userId -> (tweetId, tweetTimestamp))
 
     size_t timestamp; // 时间戳 每次产生新推文时自增
 };
